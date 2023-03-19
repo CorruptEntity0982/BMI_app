@@ -1,4 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'reusable_card.dart';
+import 'icon_content.dart';
+import 'constants.dart';
+
+enum GenderChoice {
+  male,
+  female,
+  nulll,
+}
 
 class InputPage extends StatefulWidget {
   const InputPage({Key? key}) : super(key: key);
@@ -8,6 +18,10 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+  GenderChoice? selectedGender;
+  Color maleCardColor = kInactive;
+  Color femaleCardColor = kInactive;
+  int number = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,26 +30,72 @@ class _InputPageState extends State<InputPage> {
       ),
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: Row(
-                children: const <Widget>[
+                children: <Widget>[
                   Expanded(
                     child: ReusableCard(
-                      rang: Color(0xFF1D1E33),
-                    ),
+                        onPress: () {
+                          setState(() {
+                            selectedGender = GenderChoice.female;
+                          });
+                        },
+                        rang: selectedGender == GenderChoice.female
+                            ? kActive
+                            : kInactive,
+                        cardChild: const IconContent(
+                          genderText: 'FEMALE',
+                          genderIcon: FontAwesomeIcons.venus,
+                        )),
                   ),
                   Expanded(
                     child: ReusableCard(
-                      rang: Color(0xFF1D1E33),
+                      onPress: () {
+                        setState(() {
+                          selectedGender = GenderChoice.male;
+                        });
+                      },
+                      rang: selectedGender == GenderChoice.male
+                          ? kActive
+                          : kInactive,
+                      cardChild: const IconContent(
+                        genderText: 'MALE',
+                        genderIcon: FontAwesomeIcons.mars,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            const Expanded(
+            Expanded(
               child: ReusableCard(
-                rang: Color(0xFF1D1E33),
+                rang: kActive,
+                cardChild: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Text(
+                      'HEIGHT',
+                      style: kLableTextStyle,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: const <Widget>[
+                        Text(
+                          '180',
+                          style: kCardNumbers,
+                        ),
+                        Text(
+                          'cm',
+                          style: kLableTextStyle,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             Expanded(
@@ -43,34 +103,25 @@ class _InputPageState extends State<InputPage> {
                 children: const <Widget>[
                   Expanded(
                     child: ReusableCard(
-                      rang: Color(0xFF1D1E33),
+                      rang: kActive,
                     ),
                   ),
                   Expanded(
                     child: ReusableCard(
-                      rang: Color(0xFF1D1E33),
+                      rang: kActive,
                     ),
                   ),
                 ],
               ),
             ),
+            Container(
+              color: const Color(0xFFEB1555),
+              margin: const EdgeInsets.only(top: 10),
+              width: double.infinity,
+              height: 80,
+            )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ReusableCard extends StatelessWidget {
-  const ReusableCard({super.key, required this.rang});
-  final Color rang;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: rang,
-        borderRadius: BorderRadius.circular(10),
       ),
     );
   }
